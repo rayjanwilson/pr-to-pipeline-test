@@ -1,28 +1,29 @@
 import * as cdk from '@aws-cdk/core';
-import * as logs from '@aws-cdk/aws-logs';
-import lambda = require('@aws-cdk/aws-lambda');
-import apigw = require('@aws-cdk/aws-apigatewayv2');
-import integrations = require('@aws-cdk/aws-apigatewayv2-integrations');
+import { existsSync, readFileSync } from 'fs';
 
 export class PrToPipelineStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const testLambda = new lambda.Function(this, 'Lambda', {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromAsset('lambda-fns'),
-      handler: 'lambda.handler',
-      logRetention: logs.RetentionDays.ONE_MONTH,
-    });
+    const github = {
+      owner: 'rayjanwilson',
+      repo: 'pr-to-pipeline-test',
+      branch: 'master',
+    };
 
-    const api = new apigw.HttpApi(this, 'Endpoint', {
-      defaultIntegration: new integrations.LambdaProxyIntegration({
-        handler: testLambda,
-      }),
-    });
+    if (process.env.CODEBUILD_WEBHOOK_HEAD_REF) {
+      console.log(`i can see the branch is ${process.env.CODEBUILD_WEBHOOK_HEAD_REF}`);
+    }
 
-    new cdk.CfnOutput(this, 'HTTP API Url', {
-      value: api.url ?? 'Something went wrong with the deploy',
-    });
+    const pr_file = 'pr_trigger.txt';
+    if (existsSync(pr_file)) {
+      const data = readFileSync(pr_file, 'utf-8');
+      console.log(data);
+
+      github.branch = data.split('/')[-1];
+    }
+    console.log(github);
+
+    console.log(`lets build a pipeline for ${github.branch}`);
   }
 }
