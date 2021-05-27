@@ -12,8 +12,8 @@ phases:
   build:
     on-failure: ABORT
     commands:
-      - echo $CODEBUILD_WEBHOOK_HEAD_REF > pr_trigger.txt
-      - cat pr_trigger.txt
+      # - echo $CODEBUILD_WEBHOOK_HEAD_REF > pr_trigger.txt
+      # - cat pr_trigger.txt
       - npm run deploy
 artifacts:
   files:
