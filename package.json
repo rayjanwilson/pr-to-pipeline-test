@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc",
     "cdk": "cdk",
+    "deploy": "npm run build && npx cdk deploy",
     "watch": "tsc -w",
     "test": "jest",
     "upgrade": "npx npm-check-updates -u"
@@ -35,6 +36,7 @@
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2": "^1.106.1",
     "@aws-cdk/aws-apigatewayv2-integrations": "^1.106.1",
+    "@aws-cdk/aws-codebuild": "^1.106.1",
     "@aws-cdk/aws-lambda": "^1.106.1",
     "@aws-cdk/aws-logs": "^1.106.1",
     "@aws-cdk/core": "1.106.1",
