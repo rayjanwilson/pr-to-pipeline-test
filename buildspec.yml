@@ -2,19 +2,20 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 14
-  pre_build:
-    commands:
-      - echo Installing source NPM dependencies...
-      - npm install
+  # install:
+  #   runtime-versions:
+  #     nodejs: 14
+  # pre_build:
+  #   commands:
+  #     - echo Installing source NPM dependencies...
+  #     - npm install
   build:
     commands:
       - echo Build started on `date`
-      - npm run build
-      - npx cdk synth
+      # - npm run build
+      # - npx cdk synth
       - printenv
+      - echo $CODEBUILD_WEBHOOK_HEAD_REF > pr_trigger.txt
   post_build:
     commands:
       - echo Build completed on `date`
