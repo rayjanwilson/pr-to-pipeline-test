@@ -3,6 +3,7 @@ import { Artifact } from '@aws-cdk/aws-codepipeline';
 import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from '@aws-cdk/pipelines';
 import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
 import { GenericAppStage } from './generic-app-stage';
+import { CodebuildPrTrigger } from './codebuild-pr-trigger';
 
 export interface Props extends StackProps {
   github: {
@@ -16,6 +17,9 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id, props);
 
+    new CodebuildPrTrigger(this, 'PrTrigger', { github: props.github });
+
+    // regular pipeline from here
     const sourceArtifact = new Artifact();
     const cloudAssemblyArtifact = new Artifact();
 
