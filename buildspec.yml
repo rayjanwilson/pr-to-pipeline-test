@@ -15,7 +15,7 @@ phases:
       # - echo $CODEBUILD_WEBHOOK_HEAD_REF > pr_trigger.txt
       # - cat pr_trigger.txt
       - npm run build
-      - cdk deploy --require-approval never
+      - npx cdk deploy --require-approval never
 artifacts:
   files:
     - '**/*'
