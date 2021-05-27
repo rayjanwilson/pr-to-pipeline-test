@@ -16,6 +16,7 @@ export class CodebuildPrTrigger extends Construct {
     const gitHubSource = codebuild.Source.gitHub({
       owner: props.github.owner,
       repo: props.github.repo,
+      cloneDepth: 1,
       webhook: true, // optional, default: true if `webhookFilters` were provided, false otherwise
       webhookFilters: [
         codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_CREATED)
@@ -26,6 +27,9 @@ export class CodebuildPrTrigger extends Construct {
 
     const pr_trigger_project = new codebuild.Project(this, 'PrTriggerProject', {
       source: gitHubSource,
+      environment: {
+        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+      },
     });
     const statement = new PolicyStatement();
     statement.addActions('cloudformation:*');
