@@ -31,6 +31,9 @@ export class PipelineStack extends Stack {
       sourceArtifact,
       cloudAssemblyArtifact,
       buildCommand: 'npm run build',
+      environmentVariables: {
+        branch: { value: props.github.branch },
+      },
     });
 
     new CdkPipeline(this, 'CICD', {

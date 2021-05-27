@@ -16,6 +16,9 @@ if (process.env.CODEBUILD_WEBHOOK_HEAD_REF) {
 } else if (existsSync('pr_branch.txt')) {
   const data = readFileSync('pr_branch.txt', 'utf-8');
   github.branch = data.split('/').pop() || 'master';
+} else if (process.env.branch) {
+  console.log(`woah i see env var branch is ${process.env.branch}`);
+  github.branch = process.env.branch;
 }
 
 const app = new cdk.App();
