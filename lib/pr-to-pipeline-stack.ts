@@ -1,4 +1,5 @@
 import * as cdk from '@aws-cdk/core';
+import * as logs from '@aws-cdk/aws-logs';
 import lambda = require('@aws-cdk/aws-lambda');
 import apigw = require('@aws-cdk/aws-apigatewayv2');
 import integrations = require('@aws-cdk/aws-apigatewayv2-integrations');
@@ -11,6 +12,7 @@ export class PrToPipelineStack extends cdk.Stack {
       runtime: lambda.Runtime.NODEJS_14_X,
       code: lambda.Code.fromAsset('lambda-fns'),
       handler: 'lambda.handler',
+      logRetention: logs.RetentionDays.ONE_MONTH,
     });
 
     const api = new apigw.HttpApi(this, 'Endpoint', {
