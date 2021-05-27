@@ -1,7 +1,8 @@
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { Artifact } from '@aws-cdk/aws-codepipeline';
-import { CdkPipeline, SimpleSynthAction } from '@aws-cdk/pipelines';
+import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from '@aws-cdk/pipelines';
 import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
+import { GenericAppStage } from './generic-app-stage';
 
 export interface Props extends StackProps {
   github: {
@@ -36,11 +37,25 @@ export class PipelineStack extends Stack {
       },
     });
 
-    new CdkPipeline(this, 'CICD', {
+    const pipeline = new CdkPipeline(this, 'CICD', {
       cloudAssemblyArtifact,
       sourceAction,
       synthAction,
       // crossAccountKeys: false,
     });
+
+    const devStackOptions = { branch: props.github.branch };
+    const devApp = new GenericAppStage(this, 'Dev', devStackOptions);
+    // build and test typescript code
+    const devStage = pipeline.addApplicationStage(devApp);
+
+    devStage.addActions(
+      new ShellScriptAction({
+        actionName: 'CDKUnitTests',
+        runOrder: devStage.nextSequentialRunOrder(),
+        additionalArtifacts: [sourceArtifact],
+        commands: ['npm install', 'npm run build', 'npm run test'],
+      })
+    );
   }
 }
