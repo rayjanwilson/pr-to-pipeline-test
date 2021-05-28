@@ -19,21 +19,24 @@ export class CodebuildPrTrigger extends Construct {
       cloneDepth: 1,
       webhook: true, // optional, default: true if `webhookFilters` were provided, false otherwise
       webhookFilters: [
-        codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_CREATED)
-          .andBranchIsNot('master')
-          .andBranchIsNot('main'),
+        codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_CREATED),
+        codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_REOPENED),
       ], // optional, by default all pushes and Pull Requests will trigger a build
     });
 
-    const pr_trigger_project = new codebuild.Project(this, 'PrTriggerProject', {
+    const pr_trigger_project = new codebuild.Project(this, 'Project', {
       source: gitHubSource,
       environment: {
         buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
       },
     });
-    const statement = new PolicyStatement();
-    statement.addActions('cloudformation:*');
-    statement.addResources('*');
-    pr_trigger_project.addToRolePolicy(statement);
+    const statement1 = new PolicyStatement();
+    statement1.addActions('cloudformation:*');
+    statement1.addResources('*');
+    const statement2 = new PolicyStatement();
+    statement2.addActions('ssm:*');
+    statement2.addResources('*');
+    pr_trigger_project.addToRolePolicy(statement1);
+    pr_trigger_project.addToRolePolicy(statement2);
   }
 }
