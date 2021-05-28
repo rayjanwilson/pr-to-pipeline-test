@@ -1,22 +1,21 @@
 # Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
 version: 0.2
 
+# all this does is package up the content from the pull request
 phases:
   install:
+    on-failure: ABORT
     runtime-versions:
       nodejs: 14
-  pre_build:
     commands:
-      - echo Installing source NPM dependencies...
       - npm install
   build:
+    on-failure: ABORT
     commands:
-      - echo Build started on `date`
+      - echo $CODEBUILD_WEBHOOK_HEAD_REF > pr_branch.txt
+      - cat pr_branch.txt
       - npm run build
-      - npx cdk synth
-  post_build:
-    commands:
-      - echo Build completed on `date`
+      - npx cdk deploy --require-approval never
 artifacts:
   files:
     - '**/*'

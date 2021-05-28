@@ -1,23 +1,21 @@
 import * as cdk from '@aws-cdk/core';
-import * as logs from '@aws-cdk/aws-logs';
 import lambda = require('@aws-cdk/aws-lambda');
 import apigw = require('@aws-cdk/aws-apigatewayv2');
 import integrations = require('@aws-cdk/aws-apigatewayv2-integrations');
 
-export class PrToPipelineStack extends cdk.Stack {
+export class GenericAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const testLambda = new lambda.Function(this, 'Lambda', {
+    const myLambda = new lambda.Function(this, 'Lambda', {
       runtime: lambda.Runtime.NODEJS_14_X,
       code: lambda.Code.fromAsset('lambda-fns'),
       handler: 'lambda.handler',
-      logRetention: logs.RetentionDays.ONE_MONTH,
     });
 
     const api = new apigw.HttpApi(this, 'Endpoint', {
       defaultIntegration: new integrations.LambdaProxyIntegration({
-        handler: testLambda,
+        handler: myLambda,
       }),
     });
 
