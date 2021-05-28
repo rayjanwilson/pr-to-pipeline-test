@@ -2,7 +2,7 @@
   "name": "pr-to-pipeline-test",
   "version": "0.1.0",
   "bin": {
-    "pr-to-pipeline-test": "bin/pr-to-pipeline-test.js"
+    "pr-to-pipeline": "bin/pr-to-pipeline.js"
   },
   "scripts": {
     "build": "tsc",
@@ -20,7 +20,7 @@
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
     "aws-cdk": "1.106.1",
-    "esbuild": "^0.12.4",
+    "esbuild": "^0.12.5",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-node": "^11.1.0",
