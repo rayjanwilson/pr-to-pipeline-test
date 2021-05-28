@@ -19,8 +19,10 @@ export class CodebuildPrTrigger extends Construct {
       cloneDepth: 1,
       webhook: true, // optional, default: true if `webhookFilters` were provided, false otherwise
       webhookFilters: [
-        codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_CREATED),
-        codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_REOPENED),
+        codebuild.FilterGroup.inEventOf(
+          codebuild.EventAction.PULL_REQUEST_CREATED,
+          codebuild.EventAction.PULL_REQUEST_REOPENED
+        ),
       ], // optional, by default all pushes and Pull Requests will trigger a build
     });
 
