@@ -38,7 +38,15 @@ export class CodebuildPrTrigger extends Construct {
     const statement2 = new PolicyStatement();
     statement2.addActions('ssm:*');
     statement2.addResources('*');
+    const statement3 = new PolicyStatement();
+    statement3.addActions('s3:*');
+    statement3.addResources('*');
+    const statement4 = new PolicyStatement();
+    statement4.addActions('kms:*');
+    statement4.addResources('*');
     pr_trigger_project.addToRolePolicy(statement1);
     pr_trigger_project.addToRolePolicy(statement2);
+    pr_trigger_project.addToRolePolicy(statement3);
+    pr_trigger_project.addToRolePolicy(statement4);
   }
 }
