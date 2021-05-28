@@ -17,8 +17,9 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id, props);
 
-    new CodebuildPrTrigger(this, 'PrTrigger', { github: props.github });
-
+    if (props.github.branch === 'master' || props.github.branch === 'main') {
+      new CodebuildPrTrigger(this, 'PrTrigger', { github: props.github });
+    }
     // regular pipeline from here
     const sourceArtifact = new Artifact();
     const cloudAssemblyArtifact = new Artifact();

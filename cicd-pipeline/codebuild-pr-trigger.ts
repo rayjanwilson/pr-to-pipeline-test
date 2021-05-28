@@ -32,6 +32,7 @@ export class CodebuildPrTrigger extends Construct {
         buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
       },
     });
+
     const statement1 = new PolicyStatement();
     statement1.addActions('cloudformation:*');
     statement1.addResources('*');
