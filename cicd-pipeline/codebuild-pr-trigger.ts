@@ -45,9 +45,13 @@ export class CodebuildPrTrigger extends Construct {
     const statement4 = new PolicyStatement();
     statement4.addActions('kms:*');
     statement4.addResources('*');
+    const statement5 = new PolicyStatement();
+    statement5.addActions('iam:PassRole');
+    statement5.addResources('*');
     pr_trigger_project.addToRolePolicy(statement1);
     pr_trigger_project.addToRolePolicy(statement2);
     pr_trigger_project.addToRolePolicy(statement3);
     pr_trigger_project.addToRolePolicy(statement4);
+    pr_trigger_project.addToRolePolicy(statement5);
   }
 }
