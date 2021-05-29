@@ -9,7 +9,7 @@ export interface Props {
     branch: string;
   };
 }
-export class CodebuildPrTrigger extends Construct {
+export class CodebuildMergeTrigger extends Construct {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
 
@@ -18,19 +18,11 @@ export class CodebuildPrTrigger extends Construct {
       repo: props.github.repo,
       cloneDepth: 1,
       webhook: true, // optional, default: true if `webhookFilters` were provided, false otherwise
-      webhookFilters: [
-        codebuild.FilterGroup.inEventOf(
-          codebuild.EventAction.PULL_REQUEST_CREATED,
-          codebuild.EventAction.PULL_REQUEST_REOPENED
-        ),
-      ], // optional, by default all pushes and Pull Requests will trigger a build
+      webhookFilters: [codebuild.FilterGroup.inEventOf(codebuild.EventAction.PULL_REQUEST_MERGED)], // optional, by default all pushes and Pull Requests will trigger a build
     });
 
     const pr_trigger_project = new codebuild.Project(this, 'Project', {
       source: gitHubSource,
-      environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
-      },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: 0.2,
         phases: {
@@ -39,14 +31,13 @@ export class CodebuildPrTrigger extends Construct {
             'runtime-versions': {
               nodejs: 14,
             },
-            commands: ['npm install'],
-          },
-          build: {
-            'on-failure': 'ABORT',
             commands: ['printenv'],
           },
         },
       }),
+      environment: {
+        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+      },
     });
 
     const statement1 = new PolicyStatement();
