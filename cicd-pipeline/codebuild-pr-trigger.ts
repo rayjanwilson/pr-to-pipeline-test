@@ -21,10 +21,14 @@ export class CodebuildPrTrigger extends Construct {
       webhookFilters: [
         codebuild.FilterGroup.inEventOf(
           codebuild.EventAction.PULL_REQUEST_CREATED,
-          codebuild.EventAction.PULL_REQUEST_REOPENED
+          codebuild.EventAction.PULL_REQUEST_REOPENED,
+          codebuild.EventAction.PULL_REQUEST_MERGED
         ),
       ], // optional, by default all pushes and Pull Requests will trigger a build
     });
+
+    const create_command = 'npx cdk deploy --require-approval never';
+    const destroy_command = 'npx cdk destroy --require-approval never';
 
     const pr_trigger_project = new codebuild.Project(this, 'Project', {
       source: gitHubSource,
@@ -43,7 +47,11 @@ export class CodebuildPrTrigger extends Construct {
           },
           build: {
             'on-failure': 'ABORT',
-            commands: ['printenv'],
+            commands: [
+              'printenv',
+              'npm run build',
+              `if [[ $CODEBUILD_WEBHOOK_EVENT == "PULL_REQUEST_MERGED" ]]; then ${destroy_command}; else ${create_command}; fi`,
+            ],
           },
         },
       }),
