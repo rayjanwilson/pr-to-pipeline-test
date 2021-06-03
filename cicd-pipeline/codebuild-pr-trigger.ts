@@ -28,7 +28,6 @@ export class CodebuildPrTrigger extends Construct {
     });
 
     const create_command = 'npx cdk deploy --require-approval never';
-    const destroy_command = 'npx cdk destroy --require-approval never';
 
     const pr_trigger_project = new codebuild.Project(this, 'Project', {
       source: gitHubSource,
@@ -50,7 +49,7 @@ export class CodebuildPrTrigger extends Construct {
             commands: [
               'printenv',
               'npm run build',
-              `if [[ $CODEBUILD_WEBHOOK_EVENT == "PULL_REQUEST_MERGED" ]]; then ${destroy_command}; else ${create_command}; fi`,
+              `if [ $CODEBUILD_WEBHOOK_EVENT == "PULL_REQUEST_MERGED" ]; then ./destroy-stacks.ts; else ${create_command}; fi`,
             ],
           },
         },
