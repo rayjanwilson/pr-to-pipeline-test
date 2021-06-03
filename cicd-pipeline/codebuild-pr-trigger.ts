@@ -44,7 +44,9 @@ export class CodebuildPrTrigger extends Construct {
           },
           build: {
             'on-failure': 'ABORT',
-            commands: ['[ $CODEBUILD_WEBHOOK_EVENT = "PULL_REQUEST_MERGED" ] && ./destroy-stacks.ts || npm run deploy'],
+            commands: [
+              '[ $CODEBUILD_WEBHOOK_EVENT = "PULL_REQUEST_MERGED" ] && npx ts-node destroy-stacks.ts || npm run deploy',
+            ],
           },
         },
       }),
