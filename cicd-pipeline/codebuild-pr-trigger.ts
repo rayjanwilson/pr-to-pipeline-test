@@ -27,8 +27,6 @@ export class CodebuildPrTrigger extends Construct {
       ], // optional, by default all pushes and Pull Requests will trigger a build
     });
 
-    const create_command = 'npx cdk deploy --require-approval never';
-
     const pr_trigger_project = new codebuild.Project(this, 'Project', {
       source: gitHubSource,
       environment: {
@@ -46,11 +44,7 @@ export class CodebuildPrTrigger extends Construct {
           },
           build: {
             'on-failure': 'ABORT',
-            commands: [
-              'printenv',
-              'npm run build',
-              `if [ $CODEBUILD_WEBHOOK_EVENT == "PULL_REQUEST_MERGED" ]; then ./destroy-stacks.ts; else ${create_command}; fi`,
-            ],
+            commands: ['[ $CODEBUILD_WEBHOOK_EVENT = "PULL_REQUEST_MERGED" ] && ./destroy-stacks.ts || npm run deploy'],
           },
         },
       }),

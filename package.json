@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "cdk": "cdk",
-    "deploy": "npm run build && npx cdk deploy",
+    "deploy": "npm run build && npx cdk deploy --require-approval never",
     "watch": "tsc -w",
     "test": "jest",
     "upgrade": "npx npm-check-updates -u"
