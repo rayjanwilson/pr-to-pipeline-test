@@ -1,18 +1,32 @@
 #!/usr/bin/env npx ts-node
-import { execSync } from 'child_process';
+import { execSync, exec } from 'child_process';
 
-const destroy = (stack: string): void => {
-  //   const outBuffer = execSync(`npx cdk destroy ${stack}`, { encoding: 'utf-8' });
+const destroy = (stack: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    console.log(`i am destroying ${stack}`);
+    return exec(`npx cdk destroy ${stack}`, (error, stdout, stderr) => {
+      if (error) {
+        console.error(error);
+        reject(error);
+      } else if (stderr) {
+        console.error(stderr);
+        reject(stderr);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
+
   //   console.log(outBuffer.toString());
-  console.log(`i would destroy ${stack}`);
+  // console.log(`i would destroy ${stack}`);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 const outBuffer = execSync('npx cdk list', { encoding: 'utf8' });
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 const out = outBuffer.toString();
 
 const myarray = out.split('\n').filter(item => item !== '');
 console.log(myarray);
 
-myarray.forEach(stack => destroy(stack));
+const promises = myarray.map(stack => destroy(stack));
+const results = Promise.all(promises);
+console.log(results);
