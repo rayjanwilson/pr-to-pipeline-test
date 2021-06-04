@@ -4,7 +4,7 @@ import { execSync, exec } from 'child_process';
 const destroy = async (stack: string): Promise<string> => {
   return new Promise(resolve => {
     console.log(`i am destroying ${stack}`);
-    exec(`npx cdk destroy ${stack}`, (error, stdout, stderr) => {
+    exec(`npx cdk destroy ${stack} --force`, (error, stdout, stderr) => {
       // 'npx cdk list'
       console.log(`destroyed ${stack}`);
       resolve(stdout);
