@@ -1,0 +1,82 @@
+<mxfile host="65bd71144e" pages="2">
+    <diagram id="diagramid" name="Diagram">
+        <mxGraphModel dx="1773" dy="482" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4" value="PrTriggerProjectC7953F42" style="outlineConnect=0;fontColor=#B3B3B3;gradientColor=#aaaaaa;gradientDirection=north;fillColor=#aaaaaa;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codebuild;" parent="1" vertex="1">
+                    <mxGeometry y="550" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="CICDPipelineArtifactsBucketF0034562" style="outlineConnect=0;fontColor=#B3B3B3;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="400" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="CICDPipeline24C6C0EF" style="outlineConnect=0;fontColor=#B3B3B3;gradientColor=#aaaaaa;gradientDirection=north;fillColor=#aaaaaa;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codepipeline;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="200" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="CICDPipelineSourceWebhookResource2F4D455B" style="outlineConnect=0;fontColor=#B3B3B3;gradientColor=#aaaaaa;gradientDirection=north;fillColor=#aaaaaa;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codepipeline;" parent="1" vertex="1">
+                    <mxGeometry y="200" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="CICDPipelineBuildSynthCdkBuildProject0AA5CF9D" style="outlineConnect=0;fontColor=#B3B3B3;gradientColor=#aaaaaa;gradientDirection=north;fillColor=#aaaaaa;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codebuild;" parent="1" vertex="1">
+                    <mxGeometry x="500" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="CICDPipelineDevCDKUnitTestsProject018461B2" style="outlineConnect=0;fontColor=#B3B3B3;gradientColor=#aaaaaa;gradientDirection=north;fillColor=#aaaaaa;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codebuild;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="300" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="CICDUpdatePipelineSelfMutation8BE9B5FE" style="outlineConnect=0;fontColor=#B3B3B3;gradientColor=#aaaaaa;gradientDirection=north;fillColor=#aaaaaa;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codebuild;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="100" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="CICDAssetsFileAsset194999BD2" style="outlineConnect=0;fontColor=#B3B3B3;gradientColor=#aaaaaa;gradientDirection=north;fillColor=#aaaaaa;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.codebuild;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="200" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="CICDPipelineBuildSynthCdkBuildProject0AA5CF9D|CICDPipeline24C6C0EF" value="ProjectName" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;fontColor=#EA6B66;noEdgeStyle=1;orthogonal=1;" parent="1" source="10" target="16" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="312" y="209"/>
+                            <mxPoint x="488" y="25"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="CICDUpdatePipelineSelfMutation8BE9B5FE|CICDPipeline24C6C0EF" value="ProjectName" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;fontColor=#EA6B66;noEdgeStyle=1;orthogonal=1;" parent="1" source="10" target="26" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="314" y="217"/>
+                            <mxPoint x="488" y="125"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="CICDAssetsFileAsset194999BD2|CICDPipeline24C6C0EF" value="ProjectName" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;fontColor=#EA6B66;noEdgeStyle=1;orthogonal=1;" parent="1" source="10" target="29" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="316" y="225"/>
+                            <mxPoint x="488" y="225"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="CICDPipelineDevCDKUnitTestsProject018461B2|CICDPipeline24C6C0EF" value="ProjectName" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;fontColor=#EA6B66;noEdgeStyle=1;orthogonal=1;" parent="1" source="10" target="23" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="314" y="233"/>
+                            <mxPoint x="488" y="325"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="CICDPipelineArtifactsBucketF0034562|CICDPipeline24C6C0EF" value="Location" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;fontColor=#EA6B66;noEdgeStyle=1;orthogonal=1;" parent="1" source="10" target="7" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="312" y="241"/>
+                            <mxPoint x="488" y="425"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="CICDPipeline24C6C0EF|CICDPipelineSourceWebhookResource2F4D455B" value="TargetPipeline" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;fontColor=#EA6B66;noEdgeStyle=1;orthogonal=1;" parent="1" source="11" target="10" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="62" y="225"/>
+                            <mxPoint x="238" y="225"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
