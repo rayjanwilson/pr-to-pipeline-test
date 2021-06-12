@@ -54,7 +54,7 @@ export class ImageBuilderDocker extends Construct {
     const infrastructure = new CfnInfrastructureConfiguration(this, 'Infra', {
       name: 'imagebuilder_infra',
       instanceProfileName: instanceprofile.ref,
-      instanceTypes: ['t4.micro'],
+      instanceTypes: ['t3.xlarge'],
       terminateInstanceOnFailure: false,
     });
 
@@ -66,7 +66,10 @@ export class ImageBuilderDocker extends Construct {
         {
           region: region,
           containerDistributionConfiguration: {
-            Repository: temp_ecr.repositoryName,
+            TargetRepository: {
+              Service: 'ECR',
+              RepositoryName: temp_ecr.repositoryName,
+            },
           },
         },
       ],
