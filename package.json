@@ -44,6 +44,7 @@
     "@aws-cdk/aws-codebuild": "^1.108.1",
     "@aws-cdk/aws-codepipeline": "^1.108.1",
     "@aws-cdk/aws-codepipeline-actions": "^1.108.1",
+    "@aws-cdk/aws-ecr": "^1.108.1",
     "@aws-cdk/aws-iam": "^1.108.1",
     "@aws-cdk/aws-imagebuilder": "^1.108.1",
     "@aws-cdk/aws-lambda": "^1.108.1",
