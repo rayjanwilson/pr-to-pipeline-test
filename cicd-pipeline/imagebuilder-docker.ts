@@ -18,8 +18,8 @@ export class ImageBuilderDocker extends Construct {
       version: '1.0.0',
       parentImage: 'amazonlinux:latest',
       containerType: 'DOCKER',
-      components: [generic_component.getAtt('Arn')],
-      targetRepository: temp_ecr,
+      components: [{ componentArn: generic_component.attrArn }],
+      targetRepository: { repositoryName: temp_ecr.repositoryName },
     });
   }
 }
