@@ -9,12 +9,12 @@ import {
 import { Repository } from '@aws-cdk/aws-ecr';
 import { Vpc } from '@aws-cdk/aws-ec2';
 import { CfnInstanceProfile, Role, ServicePrincipal, ManagedPolicy } from '@aws-cdk/aws-iam';
-
+import { readFileSync } from 'fs';
 export class ImageBuilderDocker extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    const { account, region } = Stack.of(scope);
+    const { region } = Stack.of(scope);
 
     const temp_ecr = new Repository(this, 'TempRepo', {
       imageScanOnPush: true,
@@ -24,6 +24,7 @@ export class ImageBuilderDocker extends Construct {
       name: 'generic-container-image-component',
       platform: 'Linux',
       version: '1.0.0',
+      data: readFileSync('./docker/component.yaml').toString(),
     });
 
     const recipe = new CfnContainerRecipe(this, 'ExImage', {
@@ -33,6 +34,8 @@ export class ImageBuilderDocker extends Construct {
       containerType: 'DOCKER',
       components: [{ componentArn: generic_component.attrArn }],
       targetRepository: { repositoryName: temp_ecr.repositoryName },
+      dockerfileTemplateData:
+        'FROM {{{ imagebuilder:parentImage }}}\n{{{ imagebuilder:environments }}}\n{{{ imagebuilder:components }}}\n',
     });
 
     const role = new Role(this, 'instancerole', {
