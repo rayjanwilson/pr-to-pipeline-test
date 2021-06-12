@@ -33,7 +33,10 @@ export class ImageBuilderDocker extends Construct {
       parentImage: 'amazonlinux:latest',
       containerType: 'DOCKER',
       components: [{ componentArn: generic_component.attrArn }],
-      targetRepository: { repositoryName: temp_ecr.repositoryName },
+      targetRepository: {
+        service: 'ECR',
+        repositoryName: temp_ecr.repositoryName,
+      },
       dockerfileTemplateData:
         'FROM {{{ imagebuilder:parentImage }}}\n{{{ imagebuilder:environments }}}\n{{{ imagebuilder:components }}}\n',
     });
@@ -68,9 +71,9 @@ export class ImageBuilderDocker extends Construct {
         {
           region: region,
           containerDistributionConfiguration: {
-            targetRepository: {
-              service: 'ECR',
-              repositoryName: temp_ecr.repositoryName,
+            TargetRepository: {
+              Service: 'ECR',
+              RepositoryName: temp_ecr.repositoryName,
             },
           },
         },
