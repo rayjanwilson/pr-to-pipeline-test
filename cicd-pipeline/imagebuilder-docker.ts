@@ -68,9 +68,9 @@ export class ImageBuilderDocker extends Construct {
         {
           region: region,
           containerDistributionConfiguration: {
-            TargetRepository: {
-              Service: 'ECR',
-              RepositoryName: temp_ecr.repositoryName,
+            targetRepository: {
+              service: 'ECR',
+              repositoryName: temp_ecr.repositoryName,
             },
           },
         },
