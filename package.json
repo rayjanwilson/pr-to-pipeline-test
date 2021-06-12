@@ -16,7 +16,7 @@
     "upgrade": "npx npm-check-updates -u"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.108.0",
+    "@aws-cdk/assert": "1.108.1",
     "@mhlabs/cfn-diagram": "^1.1.26",
     "@mhlabs/cfn-diagram-ci": "0.0.2",
     "@types/aws-lambda": "^8.10.77",
@@ -24,7 +24,7 @@
     "@types/node": "15.12.2",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
-    "aws-cdk": "1.108.0",
+    "aws-cdk": "1.108.1",
     "esbuild": "^0.12.8",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
@@ -39,17 +39,17 @@
     "typescript": "~4.3.2"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigatewayv2": "^1.108.0",
-    "@aws-cdk/aws-apigatewayv2-integrations": "^1.108.0",
-    "@aws-cdk/aws-codebuild": "^1.108.0",
-    "@aws-cdk/aws-codepipeline": "^1.108.0",
-    "@aws-cdk/aws-codepipeline-actions": "^1.108.0",
-    "@aws-cdk/aws-iam": "^1.108.0",
-    "@aws-cdk/aws-imagebuilder": "^1.108.0",
-    "@aws-cdk/aws-lambda": "^1.108.0",
-    "@aws-cdk/aws-logs": "^1.108.0",
-    "@aws-cdk/core": "1.108.0",
-    "@aws-cdk/pipelines": "^1.108.0",
+    "@aws-cdk/aws-apigatewayv2": "^1.108.1",
+    "@aws-cdk/aws-apigatewayv2-integrations": "^1.108.1",
+    "@aws-cdk/aws-codebuild": "^1.108.1",
+    "@aws-cdk/aws-codepipeline": "^1.108.1",
+    "@aws-cdk/aws-codepipeline-actions": "^1.108.1",
+    "@aws-cdk/aws-iam": "^1.108.1",
+    "@aws-cdk/aws-imagebuilder": "^1.108.1",
+    "@aws-cdk/aws-lambda": "^1.108.1",
+    "@aws-cdk/aws-logs": "^1.108.1",
+    "@aws-cdk/core": "1.108.1",
+    "@aws-cdk/pipelines": "^1.108.1",
     "source-map-support": "^0.5.19"
   },
   "husky": {
