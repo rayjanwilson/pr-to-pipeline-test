@@ -52,7 +52,7 @@ export class ImageBuilderDocker extends Construct {
     });
     const instanceprofile = new CfnInstanceProfile(this, 'instance_profile', {
       path: '/executionServiceEC2Role/',
-      roles: [role.roleArn],
+      roles: [role.roleName],
     });
     const build_vpc = new Vpc(this, 'vpc');
     const infrastructure = new CfnInfrastructureConfiguration(this, 'Infra', {
