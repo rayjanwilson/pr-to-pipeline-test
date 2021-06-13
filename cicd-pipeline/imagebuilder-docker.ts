@@ -86,7 +86,7 @@ export class ImageBuilderDocker extends Construct {
       distributionConfigurationArn: distribution.attrArn,
       imageTestsConfiguration: {
         imageTestsEnabled: true,
-        timeoutMinutes: 20,
+        timeoutMinutes: 60,
       },
     });
   }
