@@ -60,7 +60,7 @@ export class ImageBuilderDocker extends Construct {
       instanceProfileName: instanceprofile.ref,
       instanceTypes: ['t3.xlarge'],
       terminateInstanceOnFailure: false,
-      subnetId: build_vpc.privateSubnets[0].subnetId,
+      // subnetId: build_vpc.privateSubnets[0].subnetId,
     });
 
     const distribution = new CfnDistributionConfiguration(this, 'distrib', {
