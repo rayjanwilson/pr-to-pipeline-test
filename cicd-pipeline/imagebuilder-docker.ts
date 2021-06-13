@@ -81,9 +81,9 @@ export class ImageBuilderDocker extends Construct {
     });
 
     const IBImage = new CfnImage(this, 'IBImage', {
-      imageRecipeArn: recipe.attrArn,
-      infrastructureConfigurationArn: infrastructure.attrArn,
-      distributionConfigurationArn: distribution.attrArn,
+      imageRecipeArn: recipe.ref,
+      infrastructureConfigurationArn: infrastructure.ref,
+      distributionConfigurationArn: distribution.ref,
       imageTestsConfiguration: {
         imageTestsEnabled: true,
         timeoutMinutes: 60,
