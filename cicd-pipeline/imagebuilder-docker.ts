@@ -80,6 +80,10 @@ export class ImageBuilderDocker extends Construct {
       ],
     });
 
+    console.log(`recipe ref ${recipe.ref}`);
+    console.log(`infra ref ${infrastructure.ref}`);
+    console.log(`distrib ref ${distribution.ref}`);
+
     const IBImage = new CfnImage(this, 'IBImage', {
       imageRecipeArn: recipe.ref,
       infrastructureConfigurationArn: infrastructure.ref,
