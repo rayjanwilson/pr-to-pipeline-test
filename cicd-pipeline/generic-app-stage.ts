@@ -15,7 +15,7 @@ export class GenericAppStage extends Stage {
     } else if (props.branch == 'main') {
       suffix = 'Main';
     } else {
-      suffix = `Issue${props.branch.split('-')[0]}`;
+      suffix = `Issue-${props.branch.split('-')[0]}`;
     }
 
     new GenericAppStack(this, `GenericApp-${suffix}`, {

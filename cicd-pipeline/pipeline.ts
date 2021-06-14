@@ -69,6 +69,6 @@ export class PipelineStack extends Stack {
       // add infra tests
     }
 
-    new ImageBuilderDocker(this, 'IB_Docker');
+    new ImageBuilderDocker(this, 'IB_Docker', { branch: props.github.branch });
   }
 }
