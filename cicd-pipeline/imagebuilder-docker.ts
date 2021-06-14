@@ -1,4 +1,4 @@
-import { Construct, Stack } from '@aws-cdk/core';
+import { Construct, Stack, CfnOutput } from '@aws-cdk/core';
 import {
   CfnContainerRecipe,
   CfnComponent,
@@ -84,14 +84,19 @@ export class ImageBuilderDocker extends Construct {
     console.log(`infra ref ${infrastructure.ref}`);
     console.log(`distrib ref ${distribution.ref}`);
 
-    const IBImage = new CfnImage(this, 'IBImage', {
-      imageRecipeArn: recipe.ref,
-      infrastructureConfigurationArn: infrastructure.ref,
-      distributionConfigurationArn: distribution.ref,
-      imageTestsConfiguration: {
-        imageTestsEnabled: true,
-        timeoutMinutes: 60,
-      },
+    // const IBImage = new CfnImage(this, 'IBImage', {
+    //   imageRecipeArn: recipe.ref,
+    //   infrastructureConfigurationArn: infrastructure.ref,
+    //   distributionConfigurationArn: distribution.ref,
+    //   imageTestsConfiguration: {
+    //     imageTestsEnabled: true,
+    //     timeoutMinutes: 60,
+    //   },
+    // });
+
+    new CfnOutput(this, 'recipe ref', {
+      exportName: 'recipeRef',
+      value: recipe.ref,
     });
   }
 }
