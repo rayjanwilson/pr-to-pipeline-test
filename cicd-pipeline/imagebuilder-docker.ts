@@ -55,7 +55,7 @@ export class ImageBuilderDocker extends Construct {
     });
 
     const role = new Role(this, 'instancerole', {
-      roleName: 'IBrole',
+      roleName: `IBrole-${suffix}`,
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
         ManagedPolicy.fromAwsManagedPolicyName('EC2InstanceProfileForImageBuilderECRContainerBuilds'),
@@ -69,7 +69,7 @@ export class ImageBuilderDocker extends Construct {
     });
 
     const infrastructure = new CfnInfrastructureConfiguration(this, 'Infra', {
-      name: 'imagebuilder_infra',
+      name: `imagebuilder_infra-${suffix}`,
       instanceProfileName: instanceprofile.ref,
       instanceTypes: ['t3.xlarge'],
       terminateInstanceOnFailure: false,
@@ -77,7 +77,7 @@ export class ImageBuilderDocker extends Construct {
     });
 
     const distribution = new CfnDistributionConfiguration(this, 'distrib', {
-      name: 'Generic-Container-DistributionConfiguration',
+      name: `Generic-Container-DistributionConfiguration-${suffix}`,
       description:
         'This distribution configuration will deploy our container image to the desired target ECR repository in the current region',
       distributions: [
