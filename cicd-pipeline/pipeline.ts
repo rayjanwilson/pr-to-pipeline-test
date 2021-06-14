@@ -4,6 +4,7 @@ import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from '@aws-cdk/pipe
 import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
 import { GenericAppStage } from './generic-app-stage';
 import { CodebuildPrTrigger } from './codebuild-pr-trigger';
+import { ImageBuilderDocker } from './imagebuilder-docker';
 
 export interface Props extends StackProps {
   github: {
@@ -62,5 +63,7 @@ export class PipelineStack extends Stack {
         commands: ['npm install', 'npm run build', 'npm run test'],
       })
     );
+
+    new ImageBuilderDocker(this, 'IB_Docker');
   }
 }
