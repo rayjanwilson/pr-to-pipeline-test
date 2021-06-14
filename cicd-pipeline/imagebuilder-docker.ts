@@ -84,15 +84,15 @@ export class ImageBuilderDocker extends Construct {
     console.log(`infra ref ${infrastructure.ref}`);
     console.log(`distrib ref ${distribution.ref}`);
 
-    // const IBImage = new CfnImage(this, 'IBImage', {
-    //   imageRecipeArn: recipe.ref,
-    //   infrastructureConfigurationArn: infrastructure.ref,
-    //   distributionConfigurationArn: distribution.ref,
-    //   imageTestsConfiguration: {
-    //     imageTestsEnabled: true,
-    //     timeoutMinutes: 60,
-    //   },
-    // });
+    const IBDockerImage = new CfnImage(this, 'IBImage', {
+      containerRecipeArn: recipe.ref,
+      infrastructureConfigurationArn: infrastructure.ref,
+      distributionConfigurationArn: distribution.ref,
+      imageTestsConfiguration: {
+        imageTestsEnabled: true,
+        timeoutMinutes: 60,
+      },
+    });
 
     new CfnOutput(this, 'recipe ref', {
       exportName: 'recipeRef',
