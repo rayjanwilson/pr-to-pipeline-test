@@ -18,9 +18,6 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id, props);
 
-    if (props.github.branch === 'master' || props.github.branch === 'main') {
-      new CodebuildPrTrigger(this, 'PrTrigger', { github: props.github });
-    }
     // regular pipeline from here
     const sourceArtifact = new Artifact();
     const cloudAssemblyArtifact = new Artifact();
@@ -50,19 +47,27 @@ export class PipelineStack extends Stack {
       // crossAccountKeys: false,
     });
 
-    const devStackOptions = { branch: props.github.branch };
-    const devApp = new GenericAppStage(this, 'Dev', devStackOptions);
-    // build and test typescript code
-    const devStage = pipeline.addApplicationStage(devApp);
+    if (props.github.branch === 'master' || props.github.branch === 'main') {
+      new CodebuildPrTrigger(this, 'PrTrigger', { github: props.github });
+      // add deployment to test account and to prod
+    } else {
+      // must be a feature branch
+      const devStackOptions = { branch: props.github.branch };
+      const devApp = new GenericAppStage(this, 'Dev', devStackOptions);
+      // build and test typescript code
+      const devStage = pipeline.addApplicationStage(devApp);
 
-    devStage.addActions(
-      new ShellScriptAction({
-        actionName: 'CDKUnitTests',
-        runOrder: devStage.nextSequentialRunOrder(),
-        additionalArtifacts: [sourceArtifact],
-        commands: ['npm install', 'npm run build', 'npm run test'],
-      })
-    );
+      devStage.addActions(
+        new ShellScriptAction({
+          actionName: 'CDKUnitTests',
+          runOrder: devStage.nextSequentialRunOrder(),
+          additionalArtifacts: [sourceArtifact],
+          commands: ['npm install', 'npm run build', 'npm run test'],
+        })
+      );
+
+      // add infra tests
+    }
 
     new ImageBuilderDocker(this, 'IB_Docker');
   }
