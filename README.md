@@ -1,14 +1,19 @@
-# Welcome to your CDK TypeScript project!
+# Overview
 
-This is a blank project for TypeScript development with CDK.
+There are a few things that CDK Pipelines and CodePipeline don't support out of the box.
+1. CodePipeline doesn't work for feature branch git strategy. It can only listen to changes in a single branch.
+   1. We make a construct that builds a pipeline for a branch when a pull request is issued
+2. CDK Pipeline doesn't remove artifact buckets when the pipeline is removed
+   1. with feature branching, this quickly leads to a large number of orphaned s3 buckets
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+Additionally, we found it challenging to find examples of how to use ImageBuilder to make Docker images and AMIs from the pipeline.
+This repo includes both as examples, including a way to automatically update the version numbers.
 
-## Useful commands
+## multi-account
 
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+- add programmatic access to your `~/.aws/credentials` for the test and prod accounts
+- bootstrap the account the pipeline will be deployed to
+  - `npx cdk bootstrap`
+- run the following to bootstrap those accounts
+  - `env CDK_NEW_BOOTSTRAP=1 npx cdk bootstrap --profile <PROFILENAME> --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --trust <ACCOUNT_PIPELINE_DEPLOYED_TO> aws://<ACCOUNT_FOR_TEST_OR_PROD>/<REGION>`
+  - eg) `env CDK_NEW_BOOTSTRAP=1 npx cdk bootstrap --profile test --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --trust 173975140544 aws://636493737377/us-east-1`

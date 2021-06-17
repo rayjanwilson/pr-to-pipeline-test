@@ -7,28 +7,44 @@ import {
   CfnImage,
 } from '@aws-cdk/aws-imagebuilder';
 import { Repository } from '@aws-cdk/aws-ecr';
-import { Vpc } from '@aws-cdk/aws-ec2';
+// import { Vpc } from '@aws-cdk/aws-ec2';
 import { CfnInstanceProfile, Role, ServicePrincipal, ManagedPolicy } from '@aws-cdk/aws-iam';
 import { readFileSync } from 'fs';
+
+export interface Props {
+  branch: string;
+}
 export class ImageBuilderDocker extends Construct {
-  constructor(scope: Construct, id: string) {
+  constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
 
     const { region } = Stack.of(scope);
+
+    let suffix = '';
+    if (!props?.branch) {
+      suffix = 'Main';
+    } else if (props.branch == 'main') {
+      suffix = 'Main';
+    } else {
+      suffix = `Issue-${props.branch.split('-')[0]}`;
+    }
 
     const temp_ecr = new Repository(this, 'TempRepo', {
       imageScanOnPush: true,
     });
 
+    // fetch the current component, nab the data. compare upstream data with this readFileSync data
+    // might have to massage it to trim down, can md5 then
+    // if they are different then bump the version (semver)
     const generic_component = new CfnComponent(this, 'GenericComponent', {
-      name: 'generic-container-image-component',
+      name: `generic-container-image-component-${suffix}`,
       platform: 'Linux',
       version: '1.0.0',
       data: readFileSync('./docker/component.yaml').toString(),
     });
 
     const recipe = new CfnContainerRecipe(this, 'ExImage', {
-      name: 'AmazonLinux2-Container-Recipe',
+      name: `AmazonLinux2-Container-Recipe-${suffix}`,
       version: '1.0.0',
       parentImage: 'amazonlinux:latest',
       containerType: 'DOCKER',
@@ -42,7 +58,7 @@ export class ImageBuilderDocker extends Construct {
     });
 
     const role = new Role(this, 'instancerole', {
-      roleName: 'IBrole',
+      roleName: `IBrole-${suffix}`,
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
         ManagedPolicy.fromAwsManagedPolicyName('EC2InstanceProfileForImageBuilderECRContainerBuilds'),
@@ -54,9 +70,9 @@ export class ImageBuilderDocker extends Construct {
       path: '/executionServiceEC2Role/',
       roles: [role.roleName],
     });
-    const build_vpc = new Vpc(this, 'vpc');
+
     const infrastructure = new CfnInfrastructureConfiguration(this, 'Infra', {
-      name: 'imagebuilder_infra',
+      name: `imagebuilder_infra-${suffix}`,
       instanceProfileName: instanceprofile.ref,
       instanceTypes: ['t3.xlarge'],
       terminateInstanceOnFailure: false,
@@ -64,7 +80,7 @@ export class ImageBuilderDocker extends Construct {
     });
 
     const distribution = new CfnDistributionConfiguration(this, 'distrib', {
-      name: 'Generic-Container-DistributionConfiguration',
+      name: `Generic-Container-DistributionConfiguration-${suffix}`,
       description:
         'This distribution configuration will deploy our container image to the desired target ECR repository in the current region',
       distributions: [
@@ -80,22 +96,18 @@ export class ImageBuilderDocker extends Construct {
       ],
     });
 
-    console.log(`recipe ref ${recipe.ref}`);
-    console.log(`infra ref ${infrastructure.ref}`);
-    console.log(`distrib ref ${distribution.ref}`);
-
-    const IBDockerImage = new CfnImage(this, 'IBImage', {
+    const IBDockerImage = new CfnImage(this, `IBImage-${suffix}`, {
       containerRecipeArn: recipe.ref,
       infrastructureConfigurationArn: infrastructure.ref,
       distributionConfigurationArn: distribution.ref,
       imageTestsConfiguration: {
-        imageTestsEnabled: true,
+        imageTestsEnabled: false,
         timeoutMinutes: 60,
       },
     });
 
     new CfnOutput(this, 'recipe ref', {
-      exportName: 'recipeRef',
+      exportName: `recipeRef-${suffix}`,
       value: recipe.ref,
     });
   }

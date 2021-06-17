@@ -1,7 +1,8 @@
-import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
-import { Artifact } from '@aws-cdk/aws-codepipeline';
+import { Construct, SecretValue, Stack, StackProps, RemovalPolicy, PhysicalName } from '@aws-cdk/core';
+import { Artifact, Pipeline } from '@aws-cdk/aws-codepipeline';
 import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from '@aws-cdk/pipelines';
 import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
+import { Bucket, BucketEncryption, BlockPublicAccess } from '@aws-cdk/aws-s3';
 import { GenericAppStage } from './generic-app-stage';
 import { CodebuildPrTrigger } from './codebuild-pr-trigger';
 import { ImageBuilderDocker } from './imagebuilder-docker';
@@ -18,9 +19,6 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id, props);
 
-    if (props.github.branch === 'master' || props.github.branch === 'main') {
-      new CodebuildPrTrigger(this, 'PrTrigger', { github: props.github });
-    }
     // regular pipeline from here
     const sourceArtifact = new Artifact();
     const cloudAssemblyArtifact = new Artifact();
@@ -43,27 +41,47 @@ export class PipelineStack extends Stack {
       },
     });
 
+    const artifactBucket = new Bucket(this, 'ArtifactsBucket', {
+      bucketName: PhysicalName.GENERATE_IF_NEEDED,
+      encryption: BucketEncryption.KMS_MANAGED,
+      blockPublicAccess: new BlockPublicAccess(BlockPublicAccess.BLOCK_ALL),
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+    });
+    const custom_pipeline = new Pipeline(this, 'BsePipeline', {
+      artifactBucket,
+      restartExecutionOnUpdate: true,
+    });
+
     const pipeline = new CdkPipeline(this, 'CICD', {
+      codePipeline: custom_pipeline,
       cloudAssemblyArtifact,
       sourceAction,
       synthAction,
+      singlePublisherPerType: true,
       // crossAccountKeys: false,
     });
 
-    const devStackOptions = { branch: props.github.branch };
-    const devApp = new GenericAppStage(this, 'Dev', devStackOptions);
-    // build and test typescript code
-    const devStage = pipeline.addApplicationStage(devApp);
+    if (props.github.branch === 'master' || props.github.branch === 'main') {
+      new CodebuildPrTrigger(this, 'PrTrigger', { github: props.github });
+      // add deployment to test account and to prod
+    } else {
+      // must be a feature branch
+      const devStackOptions = { branch: props.github.branch };
+      const devApp = new GenericAppStage(this, 'Dev', devStackOptions);
+      // build and test typescript code
+      const devStage = pipeline.addApplicationStage(devApp);
 
-    devStage.addActions(
-      new ShellScriptAction({
-        actionName: 'CDKUnitTests',
-        runOrder: devStage.nextSequentialRunOrder(),
-        additionalArtifacts: [sourceArtifact],
-        commands: ['npm install', 'npm run build', 'npm run test'],
-      })
-    );
+      devStage.addActions(
+        new ShellScriptAction({
+          actionName: 'CDKUnitTests',
+          runOrder: devStage.nextSequentialRunOrder(),
+          additionalArtifacts: [sourceArtifact],
+          commands: ['npm install', 'npm run build', 'npm run test'],
+        })
+      );
+    }
 
-    new ImageBuilderDocker(this, 'IB_Docker');
+    new ImageBuilderDocker(this, 'IB_Docker', { branch: props.github.branch });
   }
 }
