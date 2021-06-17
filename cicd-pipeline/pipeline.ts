@@ -1,7 +1,8 @@
-import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
-import { Artifact } from '@aws-cdk/aws-codepipeline';
+import { Construct, SecretValue, Stack, StackProps, RemovalPolicy, PhysicalName } from '@aws-cdk/core';
+import { Artifact, Pipeline } from '@aws-cdk/aws-codepipeline';
 import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from '@aws-cdk/pipelines';
 import { GitHubSourceAction } from '@aws-cdk/aws-codepipeline-actions';
+import { Bucket, BucketEncryption, BlockPublicAccess } from '@aws-cdk/aws-s3';
 import { GenericAppStage } from './generic-app-stage';
 import { CodebuildPrTrigger } from './codebuild-pr-trigger';
 import { ImageBuilderDocker } from './imagebuilder-docker';
@@ -40,7 +41,20 @@ export class PipelineStack extends Stack {
       },
     });
 
+    const artifactBucket = new Bucket(this, 'ArtifactsBucket', {
+      bucketName: PhysicalName.GENERATE_IF_NEEDED,
+      encryption: BucketEncryption.KMS_MANAGED,
+      blockPublicAccess: new BlockPublicAccess(BlockPublicAccess.BLOCK_ALL),
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+    });
+    const custom_pipeline = new Pipeline(this, 'CICD', {
+      artifactBucket,
+      restartExecutionOnUpdate: true,
+    });
+
     const pipeline = new CdkPipeline(this, 'CICD', {
+      codePipeline: custom_pipeline,
       cloudAssemblyArtifact,
       sourceAction,
       synthAction,
