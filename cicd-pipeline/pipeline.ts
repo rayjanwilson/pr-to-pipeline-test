@@ -48,7 +48,7 @@ export class PipelineStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
     });
-    const custom_pipeline = new Pipeline(this, 'CICD', {
+    const custom_pipeline = new Pipeline(this, 'BsePipeline', {
       artifactBucket,
       restartExecutionOnUpdate: true,
     });
