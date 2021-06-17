@@ -33,6 +33,9 @@ export class ImageBuilderDocker extends Construct {
       imageScanOnPush: true,
     });
 
+    // fetch the current component, nab the data. compare upstream data with this readFileSync data
+    // might have to massage it to trim down, can md5 then
+    // if they are different then bump the version (semver)
     const generic_component = new CfnComponent(this, 'GenericComponent', {
       name: `generic-container-image-component-${suffix}`,
       platform: 'Linux',
@@ -98,7 +101,7 @@ export class ImageBuilderDocker extends Construct {
       infrastructureConfigurationArn: infrastructure.ref,
       distributionConfigurationArn: distribution.ref,
       imageTestsConfiguration: {
-        imageTestsEnabled: true,
+        imageTestsEnabled: false,
         timeoutMinutes: 60,
       },
     });

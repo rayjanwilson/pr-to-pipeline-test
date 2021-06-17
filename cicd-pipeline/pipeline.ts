@@ -44,6 +44,7 @@ export class PipelineStack extends Stack {
       cloudAssemblyArtifact,
       sourceAction,
       synthAction,
+      singlePublisherPerType: true,
       // crossAccountKeys: false,
     });
 
@@ -65,9 +66,6 @@ export class PipelineStack extends Stack {
           commands: ['npm install', 'npm run build', 'npm run test'],
         })
       );
-
-      // hello
-      // add infra tests
     }
 
     new ImageBuilderDocker(this, 'IB_Docker', { branch: props.github.branch });
