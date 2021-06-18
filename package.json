@@ -5,15 +5,17 @@
     "node": ">=12.9.0"
   },
   "bin": {
-    "pr-to-pipeline": "bin/pr-to-pipeline.js"
+    "pr-to-pipeline": "bin/pr-to-pipeline.js",
+    "git-cz": "./node_modules/.bin/git-cz"
   },
   "scripts": {
     "build": "tsc",
     "cdk": "cdk",
     "deploy": "npm run build && npx cdk deploy --require-approval never",
-    "watch": "tsc -w",
+    "lint": "prettier --check .",
     "test": "jest",
-    "upgrade": "npx npm-check-updates -u"
+    "upgrade": "npx npm-check-updates -u",
+    "watch": "tsc -w"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.109.0",
@@ -25,6 +27,8 @@
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
     "aws-cdk": "1.109.0",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
     "esbuild": "^0.12.9",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
@@ -55,12 +59,12 @@
     "@aws-cdk/pipelines": "^1.109.0",
     "source-map-support": "^0.5.19"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.ts": "eslint --cache --cache-location .eslintcache --fix"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
