@@ -14,7 +14,7 @@
     "commit": "git-cz",
     "deploy": "npm run build && npx cdk deploy --require-approval never",
     "lint": "eslint '*/**/*.ts' --ignore-pattern '*/**/*.d.ts' --ignore-pattern 'cdk.out/*'",
-    "release": "standard-version",
+    "release": "HUSKY_SKIP_HOOKS=1 standard-version",
     "test": "jest",
     "upgrade": "npx npm-check-updates -u",
     "watch": "tsc -w"
