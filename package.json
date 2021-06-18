@@ -11,8 +11,10 @@
   "scripts": {
     "build": "tsc",
     "cdk": "cdk",
+    "commit": "git-cz",
     "deploy": "npm run build && npx cdk deploy --require-approval never",
     "lint": "eslint '*/**/*.ts' --ignore-pattern '*/**/*.d.ts' --ignore-pattern 'cdk.out/*'",
+    "release": "standard-version",
     "test": "jest",
     "upgrade": "npx npm-check-updates -u",
     "watch": "tsc -w"
@@ -38,6 +40,7 @@
     "jest": "^27.0.4",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
+    "standard-version": "^9.3.0",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
     "typescript": "~4.3.3"
