@@ -1,6 +1,6 @@
 {
   "name": "pr-to-pipeline-test",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "engines": {
     "node": ">=12.9.0"
   },
@@ -14,7 +14,7 @@
     "commit": "git-cz",
     "deploy": "npm run build && npx cdk deploy --require-approval never",
     "lint": "eslint '*/**/*.ts' --ignore-pattern '*/**/*.d.ts' --ignore-pattern 'cdk.out/*'",
-    "release": "HUSKY_SKIP_HOOKS=1 standard-version",
+    "release": "HUSKY=0 standard-version",
     "test": "jest",
     "upgrade": "npx npm-check-updates -u",
     "watch": "tsc -w"
