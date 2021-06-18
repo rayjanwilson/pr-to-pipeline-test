@@ -12,7 +12,7 @@
     "build": "tsc",
     "cdk": "cdk",
     "deploy": "npm run build && npx cdk deploy --require-approval never",
-    "lint": "prettier --check .",
+    "lint": "eslint '*/**/*.ts' --ignore-pattern '*/**/*.d.ts' --ignore-pattern 'cdk.out/*'",
     "test": "jest",
     "upgrade": "npx npm-check-updates -u",
     "watch": "tsc -w"
