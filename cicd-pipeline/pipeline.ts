@@ -72,8 +72,7 @@ export class PipelineStack extends Stack {
       const devStackOptions = { branch: props.github.branch };
       const devApp = new GenericAppStage(this, 'Dev', devStackOptions);
       // build and test typescript code
-      const devStage = pipeline.addApplicationStage(devApp);
-
+      const devStage = pipeline.addApplicationStage(devApp, { manualApprovals: true });
       const current_step_number = devStage.nextSequentialRunOrder();
       devStage.addActions(
         new ShellScriptAction({

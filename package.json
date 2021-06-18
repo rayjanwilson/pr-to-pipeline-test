@@ -5,8 +5,7 @@
     "node": ">=12.9.0"
   },
   "bin": {
-    "pr-to-pipeline": "bin/pr-to-pipeline.js",
-    "git-cz": "./node_modules/.bin/git-cz"
+    "pr-to-pipeline": "bin/pr-to-pipeline.js"
   },
   "scripts": {
     "build": "tsc",
@@ -25,7 +24,7 @@
     "@mhlabs/cfn-diagram-ci": "0.0.2",
     "@types/aws-lambda": "^8.10.77",
     "@types/jest": "^26.0.23",
-    "@types/node": "15.12.2",
+    "@types/node": "15.12.3",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
     "aws-cdk": "1.109.0",
@@ -43,7 +42,7 @@
     "standard-version": "^9.3.0",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
-    "typescript": "~4.3.3"
+    "typescript": "~4.3.4"
   },
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2": "^1.109.0",
