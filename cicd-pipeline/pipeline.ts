@@ -41,12 +41,13 @@ export class PipelineStack extends Stack {
       },
     });
 
+    // this solves point 2,
     const artifactBucket = new Bucket(this, 'ArtifactsBucket', {
       bucketName: PhysicalName.GENERATE_IF_NEEDED,
       encryption: BucketEncryption.KMS_MANAGED,
       blockPublicAccess: new BlockPublicAccess(BlockPublicAccess.BLOCK_ALL),
-      removalPolicy: RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
+      removalPolicy: RemovalPolicy.DESTROY, // <--- when the stack gets destroyed this bucket now gets destroyed
+      autoDeleteObjects: true, // <--- stands up a custom lambda resource
     });
     const custom_pipeline = new Pipeline(this, 'BsePipeline', {
       artifactBucket,
@@ -54,13 +55,14 @@ export class PipelineStack extends Stack {
     });
 
     const pipeline = new CdkPipeline(this, 'CICD', {
-      codePipeline: custom_pipeline,
+      codePipeline: custom_pipeline, // <--- injecting here
       cloudAssemblyArtifact,
       sourceAction,
       synthAction,
       singlePublisherPerType: true,
-      // crossAccountKeys: false,
     });
+
+    // end of point 2 solution
 
     if (props.github.branch === 'master' || props.github.branch === 'main') {
       new CodebuildPrTrigger(this, 'PrTrigger', { github: props.github });
@@ -70,12 +72,20 @@ export class PipelineStack extends Stack {
       const devStackOptions = { branch: props.github.branch };
       const devApp = new GenericAppStage(this, 'Dev', devStackOptions);
       // build and test typescript code
-      const devStage = pipeline.addApplicationStage(devApp);
-
+      const devStage = pipeline.addApplicationStage(devApp, { manualApprovals: true });
+      const current_step_number = devStage.nextSequentialRunOrder();
       devStage.addActions(
         new ShellScriptAction({
           actionName: 'CDKUnitTests',
-          runOrder: devStage.nextSequentialRunOrder(),
+          runOrder: current_step_number,
+          additionalArtifacts: [sourceArtifact],
+          commands: ['npm install', 'npm run build', 'npm run test'],
+        })
+      );
+      devStage.addActions(
+        new ShellScriptAction({
+          actionName: 'SecOps',
+          runOrder: current_step_number,
           additionalArtifacts: [sourceArtifact],
           commands: ['npm install', 'npm run build', 'npm run test'],
         })
